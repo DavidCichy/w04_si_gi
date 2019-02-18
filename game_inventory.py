@@ -69,14 +69,15 @@ def print_table(inventory, order=None):
     print_item_in_line(longest_item_name_lenght, "item name", longest_item_value_lenght, "count")
     print_dashes(total_width_of_table)
 
+    if order == "count,asc":
+      for key, value in sorted(inventory.items(), key=lambda kv: kv[1]):
+       print_item_in_line(longest_item_name_lenght, key, longest_item_value_lenght, value)
+   
+
     if order == "count,desc":
       for key, value in sorted(inventory.items(), key=lambda kv: kv[1], reverse = True):
-       #spaces_number_for_item = 2 + longest_item_name_lenght - len(key)
-       #spaces_number_for_item_number = 2 + longest_item_value_lenght - len(str(value))
        print_item_in_line(longest_item_name_lenght, key, longest_item_value_lenght, value)
-    
-       #print("{} {} | {} {}".format(" " * spaces_number_for_item_number, value, " " * spaces_number_for_item , key))
-   
+
     print_dashes(total_width_of_table)
 
 
@@ -106,7 +107,7 @@ def export_inventory(inventory, filename="export_inventory.csv"):
     pass
 
 inv = {'rope': 1, 'torch': 6, 'Dragon Blade Of Awesomeness':3 }
-print_table(inv, "count,desc")
+print_table(inv, "count,asc")
 inv = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}
 dragon_loot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']
 inv = add_to_inventory(inv, dragon_loot)
