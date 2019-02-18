@@ -28,6 +28,13 @@ def add_to_inventory(inventory, added_items):
 
     return inventory
 
+def print_dashes(number):
+    print("{}".format("-" * number))
+
+def print_item_in_line(lenght_of_1st_row, value1, lenght_of_2st_row, value2):
+    spaces1 = lenght_of_1st_row - len(str(value1))
+    spaces2 = lenght_of_2st_row - len(str(value2))
+    print("{}{} | {}{}".format(" " * spaces1, value1, " " * spaces2 , value2))
 
 def print_table(inventory, order=None):
     '''
@@ -47,8 +54,30 @@ def print_table(inventory, order=None):
       inventory) in descending order
     - "count,asc" means the table is ordered by count in ascending order
     '''
+    longest_item_name_lenght = 9
+    longest_item_value_lenght = 5
 
-    pass
+    for key, value in inventory.items():
+      if len(key) > longest_item_name_lenght:
+        longest_item_name_lenght = len(key)
+      if len(str(value)) > longest_item_value_lenght:
+        longest_item_value_lenght = len(str(value))
+    
+    total_width_of_table = longest_item_name_lenght + longest_item_value_lenght + 3
+    
+    print_dashes(total_width_of_table)
+    print_item_in_line(longest_item_name_lenght, "item name", longest_item_value_lenght, "count")
+    print_dashes(total_width_of_table)
+
+    if order == "count,desc":
+      for key, value in sorted(inventory.items(), key=lambda kv: kv[1], reverse = True):
+       #spaces_number_for_item = 2 + longest_item_name_lenght - len(key)
+       #spaces_number_for_item_number = 2 + longest_item_value_lenght - len(str(value))
+       print_item_in_line(longest_item_name_lenght, key, longest_item_value_lenght, value)
+    
+       #print("{} {} | {} {}".format(" " * spaces_number_for_item_number, value, " " * spaces_number_for_item , key))
+   
+    print_dashes(total_width_of_table)
 
 
 def import_inventory(inventory, filename="import_inventory.csv"):
@@ -76,7 +105,10 @@ def export_inventory(inventory, filename="export_inventory.csv"):
 
     pass
 
+inv = {'rope': 1, 'torch': 6, 'Dragon Blade Of Awesomeness':3 }
+print_table(inv, "count,desc")
 inv = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}
 dragon_loot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']
 inv = add_to_inventory(inv, dragon_loot)
 display_inventory(inv)
+print_table(inv, "count,desc")
