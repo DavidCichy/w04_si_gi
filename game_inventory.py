@@ -72,10 +72,13 @@ def print_table(inventory, order=None):
     if order == "count,asc":
       for key, value in sorted(inventory.items(), key=lambda kv: kv[1]):
        print_item_in_line(longest_item_name_lenght, key, longest_item_value_lenght, value)
-   
 
-    if order == "count,desc":
+    elif order == "count,desc":
       for key, value in sorted(inventory.items(), key=lambda kv: kv[1], reverse = True):
+       print_item_in_line(longest_item_name_lenght, key, longest_item_value_lenght, value)
+    
+    else:
+      for key, value in inventory.items():
        print_item_in_line(longest_item_name_lenght, key, longest_item_value_lenght, value)
 
     print_dashes(total_width_of_table)
