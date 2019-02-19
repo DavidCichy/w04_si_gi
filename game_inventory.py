@@ -12,9 +12,9 @@ def display_inventory(inventory):
       '''
     total_items_count = 0
     for key, value in inventory.items():
-      print("{} {}".format(value, key))
+      print("{}: {}".format(key, value))
       total_items_count += value
-    print("Total number of items: {}".format(total_items_count))
+    #print("Total number of items: {}".format(total_items_count))
     
 
 def add_to_inventory(inventory, added_items):
@@ -54,8 +54,11 @@ def print_table(inventory, order=None):
       inventory) in descending order
     - "count,asc" means the table is ordered by count in ascending order
     '''
-    longest_item_name_lenght = 9
-    longest_item_value_lenght = 5
+    name_header = "item name"
+    value_header = "count"
+    
+    longest_item_name_lenght = len(name_header)
+    longest_item_value_lenght = len(value_header)
 
     for key, value in inventory.items():
       if len(key) > longest_item_name_lenght:
@@ -66,7 +69,7 @@ def print_table(inventory, order=None):
     total_width_of_table = longest_item_name_lenght + longest_item_value_lenght + 3
     
     print_dashes(total_width_of_table)
-    print_item_in_line(longest_item_name_lenght, "item name", longest_item_value_lenght, "count")
+    print_item_in_line(longest_item_name_lenght, name_header, longest_item_value_lenght, value_header)
     print_dashes(total_width_of_table)
 
     if order == "count,asc":
@@ -78,7 +81,7 @@ def print_table(inventory, order=None):
        print_item_in_line(longest_item_name_lenght, key, longest_item_value_lenght, value)
     
     else:
-      for key, value in inventory.items():
+      for key, value in inventory.items() :
        print_item_in_line(longest_item_name_lenght, key, longest_item_value_lenght, value)
 
     print_dashes(total_width_of_table)
@@ -93,8 +96,17 @@ def import_inventory(inventory, filename="import_inventory.csv"):
 
     The file format is plain text with comma separated values (CSV).
     '''
+    added_items_list =[]
+    with open(filename, 'r+') as import_file:
+      added_items_list = []
+      for line in import_file:
+        added_items_line = line.split(",")
+        for item in added_items_line:
+          added_items_list.append(item)
 
-    pass
+    inventory = add_to_inventory(inventory, added_items_list)
+
+    return inventory
 
 
 def export_inventory(inventory, filename="export_inventory.csv"):
@@ -109,10 +121,15 @@ def export_inventory(inventory, filename="export_inventory.csv"):
 
     pass
 
-inv = {'rope': 1, 'torch': 6, 'Dragon Blade Of Awesomeness':3 }
+inv = {'rope': 1, 'torch': 999999999, 'Dragon Blade Of Awesomeness':3 }
 print_table(inv, "count,asc")
 inv = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}
+print_table(inv, "count,asc")
 dragon_loot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']
 inv = add_to_inventory(inv, dragon_loot)
 display_inventory(inv)
+import_inventory(inv, "test_inventory.csv")
 print_table(inv, "count,desc")
+inv = {'rope': 1, 'torch': 6 }
+inv = import_inventory(inv, 'test_inventory_export.csv')
+print_table(inv)
