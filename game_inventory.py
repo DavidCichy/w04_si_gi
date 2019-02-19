@@ -4,6 +4,7 @@
 # according to the specification.
 
 
+
 def display_inventory(inventory):
     '''Display the inventory like this:
     rope: 1
@@ -14,7 +15,7 @@ def display_inventory(inventory):
     for key, value in inventory.items():
       print("{}: {}".format(key, value))
       total_items_count += value
-    #print("Total number of items: {}".format(total_items_count))
+    # print("Total number of items: {}".format(total_items_count))
     
 
 def add_to_inventory(inventory, added_items):
@@ -96,17 +97,22 @@ def import_inventory(inventory, filename="import_inventory.csv"):
 
     The file format is plain text with comma separated values (CSV).
     '''
-    added_items_list =[]
-    with open(filename, 'r+') as import_file:
-      added_items_list = []
-      for line in import_file:
-        added_items_line = line.split(",")
-        for item in added_items_line:
-          added_items_list.append(item)
+    try:
+      with open(filename, 'r') as import_file:
+        added_items_list = []
+        for line in import_file:
+          added_items_line = line.split(",")
+          for item in added_items_line:
+            added_items_list.append(item)
 
-    inventory = add_to_inventory(inventory, added_items_list)
+      inventory = add_to_inventory(inventory, added_items_list)
+    
+    except:
+      print("File 'no_such_file.csv' not found!")
 
     return inventory
+
+
 
 
 def export_inventory(inventory, filename="export_inventory.csv"):
