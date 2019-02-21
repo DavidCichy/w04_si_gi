@@ -131,7 +131,6 @@ def export_inventory(inventory, filename="export_inventory.csv"):
         item_counter_total = 0
 
         for key, value in inventory.items():
-          item_counter_current = 0
 
           for item_counter_current in range(value):
             item_counter_total += 1
@@ -144,8 +143,9 @@ def export_inventory(inventory, filename="export_inventory.csv"):
     except PermissionError:
       print("You don't have permission creating file \'{}\'!".format(filename))
 
+# Below code tests all funcionalities:
+
 '''
-Below code tests all funcionalities:
 inv = {'rope': 1, 'torch': 999999999, 'Dragon Blade Of Awesomeness': 3}
 print_table(inv, "count,asc")
 inv = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}
