@@ -29,7 +29,7 @@ def add_to_inventory(inventory, added_items):
 
 
 def print_dashes(number):
-    print("{}".format("-" * number))
+    print("-" * number)
 
 
 def print_item_in_line(lenght_of_1st_row, value1, lenght_of_2st_row, value2):
@@ -103,13 +103,14 @@ def import_inventory(inventory, filename="import_inventory.csv"):
         added_items_list = []
         for line in import_file:
           added_items_line = line.split(",")
-          for item in added_items_line:
-            added_items_list.append(item)
+      
+      for item in added_items_line:
+        added_items_list.append(item)
 
       inventory = add_to_inventory(inventory, added_items_list)
 
     except:
-      print("File 'no_such_file.csv' not found!")
+      print("File '{}' not found!".format(filename))
 
     return inventory
 
@@ -123,9 +124,28 @@ def export_inventory(inventory, filename="export_inventory.csv"):
 
     The file format is plain text with comma separated values (CSV).
     '''
+    try:
+      with open(filename, "w+") as export_file:
 
-    pass
+        number_of_items = sum(inventory.values())
+        item_counter_total = 0
 
+        for key, value in inventory.items():
+          item_counter_current = 0
+
+          for item_counter_current in range(value):
+            item_counter_total += 1
+
+            if item_counter_total < number_of_items:
+              export_file.write("{},".format(key))
+            else:
+              export_file.write(key)
+            
+    except PermissionError:
+      print("You don't have permission creating file \'{}\'!".format(filename))
+
+'''
+Below code tests all funcionalities:
 inv = {'rope': 1, 'torch': 999999999, 'Dragon Blade Of Awesomeness': 3}
 print_table(inv, "count,asc")
 inv = {'rope': 1, 'torch': 6, 'gold coin': 42, 'dagger': 1, 'arrow': 12}
@@ -138,3 +158,7 @@ print_table(inv, "count,desc")
 inv = {'rope': 1, 'torch': 6}
 inv = import_inventory(inv, 'test_inventory_export.csv')
 print_table(inv)
+export_inventory(inv)
+import_inventory(inv, "export_inventory.csv")
+print_table(inv)
+'''
